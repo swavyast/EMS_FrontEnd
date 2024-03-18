@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import EmployeeService from '../services/EmployeeService'
 
 class ListEmployeeComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            employee: []
+            employees: []
         };
     }
-
+    componentDidMount() {
+        EmployeeService.getEmployees().then((res) => {
+            this.setState({ employees: res.data })
+        });
+    }
     render() {
         return (
             <div>
-                <h1 className='text-center'>Employee List</h1>
+                <h1 className='text-center p-5'>Employee List</h1>
                 <div className="className row">
                     <table className="className table table-striped table-bordered">
                         <thead>
@@ -21,19 +26,19 @@ class ListEmployeeComponent extends React.Component {
                                 <th>Employee Last Name</th>
                                 <th>Employee Email Id</th>
                                 <th>Employee Contact</th>
-                                <th>Employee Actions</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                this.state.employee.map(
+                                this.state.employees.map(
                                     employee =>
-                                    <tr key={employee.id}>
-                                        <td>{employee.fname}</td>
-                                        <td>{employee.lname}</td>
-                                        <td>{employee.email}</td>
-                                        <td>{employee.phone}</td>
-                                    </tr>
+                                        <tr key={employee.id}>
+                                            <td>{employee.firstName}</td>
+                                            <td>{employee.lastName}</td>
+                                            <td>{employee.email}</td>
+                                            <td>{employee.phone}</td>
+                                        </tr>
                                 )
                             }
                         </tbody>
