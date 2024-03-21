@@ -1,23 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-class Home extends React.Component {
+function HomePageWrapper() {
+    const navigate = useNavigate(); // Initialize the useNavigate hook
+
+    return <HomePageComponent navigate={navigate} />; // Pass navigate as a prop to HomePageComponent
+}
+
+class HomePageComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.addEmployee = this.addEmployee.bind(this);
+        this.getEmployees = this.getEmployees.bind(this);
     }
-
+    addEmployee(){
+        this.props.navigate('/add-employee');
+    }
+    getEmployees(){
+        this.props.navigate('/employees');
+    }
     render() {
         return (
             <div>
                 <h1 className='text-center text-dark'>HOME</h1>
-                <a href="http://localhost:3000/employees" className='btn btn-dark text-white text-decoration-none p-1 m-1'>List Employees</a>
-                <a href="add-employee" className='btn btn-dark text-white text-decoration-none p-1 m-1'>Add Employees</a>
+                <button onClick={this.getEmployees} className='btn btn-dark text-white text-decoration-none p-1 m-1'>List Employees</button>
+                <button onClick={this.addEmployee} className='btn btn-dark text-white text-decoration-none p-1 m-1'>Add Employee</button>
             </div>
         );
     }
 }
 
-Home.propTypes = {};
+HomePageComponent.propTypes = {
+    navigate: PropTypes.func.isRequired
+};
 
-export default Home;
+export default HomePageWrapper;
