@@ -25,6 +25,22 @@ class ListEmployeeComponent extends React.Component {
     goForth() {
         this.props.navigate('/add-employee');
     }
+    updateEmployee(id, employee) {
+        this.props.navigate('/update-employee/' + id, { state: { employee } });
+        const { firstName, lastName, email, phone } = employee;
+        const emp = { firstName, lastName, email, phone };
+        EmployeeService.updateEmployee(id, emp)
+            .then(response => {
+                console.log('Employee updated successfully');
+            })
+            .catch(error => {
+                console.error('Error updating employee:', error);
+            });
+    }
+    deleteEmployee(id) {
+        EmployeeService.deleteEmployee(id);
+        this.props.navigate('/employees')
+    }
     componentDidMount() {
         EmployeeService.getEmployees().then((res) => {
             this.setState({ employees: res.data })
@@ -58,6 +74,8 @@ class ListEmployeeComponent extends React.Component {
                                             <td>{employee.lastName}</td>
                                             <td>{employee.email}</td>
                                             <td>{employee.phone}</td>
+                                            <td><button onClick={() => this.updateEmployee(employee.id, employee)} className='text-center btn btn-sm btn-info m-0 p-1'>Update</button></td>
+                                            <td><button onClick={() => this.deleteEmployee(employee.id)} className='text-center btn btn-sm btn-danger m-0 p-1'>Delete</button></td>
                                         </tr>
                                 )
                             }
